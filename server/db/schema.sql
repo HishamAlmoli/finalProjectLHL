@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS schedules_children CASCADE;
 --parents could alternatively be account holder
 CREATE TABLE parents (
   id SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(255) NOT NULL,
+  parent_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   phone VARCHAR(15) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL
@@ -16,7 +16,7 @@ CREATE TABLE parents (
 
 CREATE TABLE activities (
   id SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(255) NOT NULL,
+  activity_name VARCHAR(255) NOT NULL,
   description TEXT,
   out_of_daycare BOOLEAN NOT NULL DEFAULT FALSE
 );
@@ -29,7 +29,7 @@ CREATE TABLE schedules (
 
 CREATE TABLE employees (
   id SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(255) NOT NULL,
+  employee_name VARCHAR(255) NOT NULL,
   phone VARCHAR(15) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL
 );
@@ -37,7 +37,7 @@ CREATE TABLE employees (
 CREATE TABLE children (
   id SERIAL PRIMARY KEY NOT NULL,
   parent_id INTEGER REFERENCES parents(id) ON DELETE CASCADE,
-  name VARCHAR(255) NOT NULL,
+  child_name VARCHAR(255) NOT NULL,
   notes TEXT,
   birthday DATE,
   age_group TEXT
