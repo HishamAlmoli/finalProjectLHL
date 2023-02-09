@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 8001
+const port = 3001
 const { getActivities, createActivity, deleteActivity } = require('./queries')
 
 app.use(express.json())
@@ -31,7 +31,7 @@ app.post('/activities', (req, res) => {
     })
 })
 
-app.delete('/activities/id', (req, res) => {
+app.delete('/activities/:id', (req, res) => {
   deleteActivity(req.params.id)
     .then(response => {
       res.status(200).send(response);

@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AddChild from './components/AddChild'
 import Home from './components/Home'
 import Children from './components/Children'
@@ -17,7 +17,7 @@ function App() {
     getActivities();
   }, []);
   function getActivities() {
-    fetch('http://localhost:8001')
+    fetch('http://localhost:3001')
       .then(response => {
         return response.json();
       })
@@ -30,7 +30,7 @@ function App() {
   function createActivity() {
     let activity_name = prompt('Enter activity name');
     let description = prompt('Enter activity desctiption');;
-    fetch('http://localhost:8001/activities', {
+    fetch('/activities', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ function App() {
 
   function deleteActivity() {
     let id = prompt('Enter activity id');
-    fetch(`http://localhost:8001/activities/${id}`, {
+    fetch(`/activities/${id}`, {
       method: 'DELETE',
 
     })
@@ -64,17 +64,17 @@ function App() {
   const activity = activities.map((activity) => {
     const name = activity.activity_name
     const key = activity.id
-    return <li>{name}</li>
+    return <li key={key}>{name}</li>
   })
   return (
     <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/addchild" element={<AddChild />} />
-          <Route path="/children" element={<Children />} />
-          <Route path="/addActivity" element={<AddActivity />} />
-          <Route path="/activites" element={<Activites />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/addchild" element={<AddChild />} />
+        <Route path="/children" element={<Children />} />
+        <Route path="/addActivity" element={<AddActivity />} />
+        <Route path="/activites" element={<Activites />} />
+      </Routes>
       {activities ? activity : 'There is no activity data available'}
       <br />
       <button onClick={createActivity}>Add activity</button>

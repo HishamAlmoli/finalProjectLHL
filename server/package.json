@@ -12,5 +12,5 @@
     "morgan": "~1.9.1",
     "pg": "^8.9.0"
   },
-  "proxy": "http://localhost:8001"
+  "proxy": "http://localhost:3001"
 }
