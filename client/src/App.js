@@ -19,10 +19,11 @@ function App() {
   function getActivities() {
     fetch('http://localhost:8001')
       .then(response => {
+      console.log('testPrint');
         return response.json();
       })
       .then(data => {
-        console.log(data)
+        console.log('data',data)
         setActivities(data);
       });
   }
