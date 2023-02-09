@@ -10,8 +10,19 @@ const pool = new Pool({
 const getActivities = () => {
   return pool
     .query(`
-    select * from activities;
-`)
+    select * from activities;`)
+    .then((result) => {
+      return result.rows
+    })
+    .catch((err) => {
+      console.log("Catch: ", err.message);
+    });
+}
+
+const updateActivity = (body, id) => {
+  const { activity_name, description } = body
+  return pool
+    .query('UPDATE activities SET activity_name = $1, description = $2 WHERE id = $3;', [activity_name, description, id])
     .then((result) => {
       return result.rows
     })
@@ -21,30 +32,31 @@ const getActivities = () => {
 }
 
 const createActivity = (body) => {
-  return new Promise(function (resolve, reject) {
-    const { activity_name, description } = body
-    pool.query('INSERT INTO activities (activity_name, description) VALUES ($1, $2) RETURNING *', [activity_name, description], (error, results) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(`A new activity has been added added: ${results.rows[0]}`)
+  const { activity_name, description } = body
+  return pool
+    .query('INSERT INTO activities (activity_name, description) VALUES ($1, $2) RETURNING *', [activity_name, description])
+    .then((result) => {
+      return result.rows
     })
-  })
+    .catch((err) => {
+      console.log("Catch: ", err.message);
+    });
 }
-const deleteActivity = (id) => {
-  return new Promise(function (resolve, reject) {
 
-    pool.query('DELETE FROM activities WHERE id = $1', [id], (error, results) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(`activity deleted with ID: ${id}`)
+const deleteActivity = (id) => {
+  return pool
+    .query('DELETE FROM activities WHERE id = $1', [id])
+    .then((result) => {
+      return result.rows
     })
-  })
+    .catch((err) => {
+      console.log("Catch: ", err.message);
+    });
 }
 
 module.exports = {
   getActivities,
   createActivity,
-  deleteActivity
+  deleteActivity,
+  updateActivity
 }

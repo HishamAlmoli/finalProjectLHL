@@ -46,6 +46,26 @@ function App() {
       });
   }
 
+  function updateActivity() {
+    let id = prompt('Enter activity id');
+    let activity_name = prompt('Enter activity name');
+    let description = prompt('Enter activity desctiption');;
+    fetch(`/activities/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ activity_name, description }),
+    })
+      .then(response => {
+        return response.text();
+      })
+      .then(data => {
+        alert(data);
+        getActivities();
+      });
+  }
+
   function deleteActivity() {
     let id = prompt('Enter activity id');
     fetch(`/activities/${id}`, {
@@ -80,6 +100,8 @@ function App() {
       <button onClick={createActivity}>Add activity</button>
       <br />
       <button onClick={deleteActivity}>Delete activity</button>
+      <br />
+      <button onClick={updateActivity}>Update activity</button>
     </div>
   );
 }

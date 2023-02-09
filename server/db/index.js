@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 3001
-const { getActivities, createActivity, deleteActivity } = require('./queries')
+const { getActivities, createActivity, deleteActivity, updateActivity } = require('./queries')
 
 app.use(express.json())
 app.use(function (req, res, next) {
@@ -23,6 +23,16 @@ app.get('/', (req, res) => {
 
 app.post('/activities', (req, res) => {
   createActivity(req.body)
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.put('/activities/:id', (req, res) => {
+  updateActivity(req.body, req.params.id)
     .then(response => {
       res.status(200).send(response);
     })
