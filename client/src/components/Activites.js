@@ -55,9 +55,9 @@ const Activites = () => {
     // Code to open a modal or form to edit the selected row
   };
 
-  const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredData = data.filter((item) =>
+  //   item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   //---
   const activity = activities.map((activity) => {
@@ -67,7 +67,7 @@ const Activites = () => {
   })
   return (
     <div>
-    {activities ? activity : 'There is no activity data available'}
+    {/* {activities ? activity : 'There is no activity data available'} */}
         <h1>Activites List</h1>
       <Form inline className="mb-3">
         <FormControl
@@ -109,7 +109,8 @@ const Activites = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item) => (
+          {/* {filteredData.map((item) => ( */}
+          {data.map((item) => (
             <tr key={item.id}>
               <td>
                 <input
@@ -118,9 +119,11 @@ const Activites = () => {
                   onChange={() => handleRowSelection(item.id)}
                 />
               </td>
-              <td>{item.families_id}</td>
-              <td>{item.name}</td>
-              <td>{item.birthDate}</td>
+              <td>{item.id}</td>
+              <td>{item.activity_name}</td>
+              <td>{item.description}</td>
+              <td>{item.out_of_daycare}</td>
+              {/* <td>{{item.out_of_daycare} ? Ouside : Inside}</td> */}
               {/* <td>{item.id}</td>
               <td>{item.name}</td>
               <td>{item.Description}</td>
