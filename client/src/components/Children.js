@@ -6,14 +6,21 @@ const Children = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [children, setChildren] = useState([]);
 
   useEffect(() => {
-    fetch("API_URL_HERE")
-      .then((res) => res.json())
-      .then((result) => {
-        setData(result);
-      });
+    getChildren();
   }, []);
+  function getChildren() {
+    fetch('http://localhost:3001')
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data)
+        setChildren(data);
+      });
+  }
 
   const handleRowSelection = (id) => {
     if (selectedRows.includes(id)) {
@@ -41,10 +48,16 @@ const Children = () => {
   const filteredData = data.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const child = children.map((child) => {
+    const name = child.child_name
+    const key = child.id
+    return <li key={key}>{name}</li>
+  })
 
   return (
     <div>
-        <h1>Children List</h1>
+      {children ? child : 'There is no activity data available'}
+      <h1>Children List</h1>
       <Form inline className="mb-3">
         <FormControl
           type="text"

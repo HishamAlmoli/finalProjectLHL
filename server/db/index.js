@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 3001
-const { getActivities, createActivity, deleteActivity, updateActivity } = require('./queries')
+const { getActivities, createActivity, deleteActivity, updateActivity, getChildren } = require('./queries')
 
 app.use(express.json())
 app.use(function (req, res, next) {
@@ -12,6 +12,15 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
+  getChildren()
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+app.get('/activities', (req, res) => {
   getActivities()
     .then(response => {
       res.status(200).send(response);
@@ -20,6 +29,7 @@ app.get('/', (req, res) => {
       res.status(500).send(error);
     })
 })
+
 
 app.post('/activities', (req, res) => {
   createActivity(req.body)

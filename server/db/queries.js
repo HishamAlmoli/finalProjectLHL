@@ -7,6 +7,18 @@ const pool = new Pool({
   port: 5432,
 });
 
+const getChildren = () => {
+  return pool
+    .query(`
+    select * from children;`)
+    .then((result) => {
+      return result.rows
+    })
+    .catch((err) => {
+      console.log("Catch: ", err.message);
+    });
+}
+
 const getActivities = () => {
   return pool
     .query(`
@@ -18,6 +30,7 @@ const getActivities = () => {
       console.log("Catch: ", err.message);
     });
 }
+
 
 const updateActivity = (body, id) => {
   const { activity_name, description } = body
@@ -58,5 +71,6 @@ module.exports = {
   getActivities,
   createActivity,
   deleteActivity,
-  updateActivity
+  updateActivity,
+  getChildren
 }

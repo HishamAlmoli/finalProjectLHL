@@ -17,7 +17,7 @@ function App() {
     getActivities();
   }, []);
   function getActivities() {
-    fetch('http://localhost:3001')
+    fetch('/activities')
       .then(response => {
         return response.json();
       })
@@ -86,6 +86,7 @@ function App() {
     const key = activity.id
     return <li key={key}>{name}</li>
   })
+
   return (
     <div className="App">
       <Routes>
@@ -96,6 +97,7 @@ function App() {
         <Route path="/activities" element={<Activities />} />
       </Routes>
       {activities ? activity : 'There is no activity data available'}
+
       <br />
       <button onClick={createActivity}>Add activity</button>
       <br />
