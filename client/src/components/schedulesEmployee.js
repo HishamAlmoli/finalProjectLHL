@@ -68,7 +68,7 @@ const Activites = () => {
   return (
     <div>
     {/* {activities ? activity : 'There is no activity data available'} */}
-        <h1>Activites List</h1>
+        <h1>Activites Schedule - Admin mode</h1>
       <Form inline className="mb-3">
         <FormControl
           type="text"
@@ -124,9 +124,6 @@ const Activites = () => {
               <td>{item.description}</td>
               <td>{item.out_of_daycare}</td>
               {/* <td>{{item.out_of_daycare} ? Ouside : Inside}</td> */}
-              {item.out_of_daycare} === true ? 
-             <td>Ouside Activity</td> :
-             <td>Inside Activity</td> 
               {/* <td>{item.id}</td>
               <td>{item.name}</td>
               <td>{item.Description}</td>

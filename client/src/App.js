@@ -8,6 +8,8 @@ import Home from './components/Home'
 import Children from './components/Children'
 import AddActivity from './components/AddActivity'
 import Activites from './components/Activites'
+import ScheduleParent from './components/scheduleParent'
+import SchedulesEmployee from './components/schedulesEmployee'
 // import React, { useState, useEffect } from 'react';
 
 
@@ -77,6 +79,9 @@ function App() {
           <NavLink to="/activites">Activites </NavLink>
           <NavLink to="/addchild">AddChild </NavLink>
           <NavLink to="/addActivity">AddActivity </NavLink>
+          <br />
+          <NavLink to="/schedulesEmployee">SchedulesEmployee </NavLink>
+          <NavLink to="/scheduleParent">ScheduleParent </NavLink>
         </nav>
       </div>
         <Routes>
@@ -85,6 +90,8 @@ function App() {
           <Route path="/children" element={<Children />} />
           <Route path="/addActivity" element={<AddActivity />} />
           <Route path="/activites" element={<Activites />} />
+          <Route path="/schedulesEmployee" element={<SchedulesEmployee />} />
+          <Route path="/scheduleParent" element={<ScheduleParent />} />
         </Routes>
       {activities ? activity : 'There is no activity data available'}
       <br />
