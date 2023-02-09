@@ -7,8 +7,25 @@ const Activites = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  //---
+  const [activities, setActivities] = useState([]);
   useEffect(() => {
-    fetch("API_URL_HERE")
+    getActivities();
+  }, []);
+  function getActivities() {
+    fetch('http://localhost:3000/activites')
+      .then(response => {
+        console.log('response',response);
+        return response.json();
+      })
+      .then(data => {
+        setActivities(data);
+        
+      });
+  }
+
+  useEffect(() => {
+    fetch("http://localhost:3000/activites")
       .then((res) => res.json())
       .then((result) => {
         setData(result);
@@ -42,8 +59,15 @@ const Activites = () => {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  //---
+  const activity = activities.map((activity) => {
+    const name = activity.activity_name
+    const key = activity.id
+    return <li>{name}</li>
+  })
   return (
     <div>
+    {activities ? activity : 'There is no activity data available'}
         <h1>Activites List</h1>
       <Form inline className="mb-3">
         <FormControl
@@ -94,10 +118,13 @@ const Activites = () => {
                   onChange={() => handleRowSelection(item.id)}
                 />
               </td>
-              <td>{item.id}</td>
+              <td>{item.families_id}</td>
+              <td>{item.name}</td>
+              <td>{item.birthDate}</td>
+              {/* <td>{item.id}</td>
               <td>{item.name}</td>
               <td>{item.Description}</td>
-              <td>{item.out}</td>
+              <td>{item.out}</td> */}
             </tr>
           ))}
         </tbody>

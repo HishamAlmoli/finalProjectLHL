@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {NavLink, Routes, Route} from 'react-router-dom'
 import AddChild from './components/AddChild'
 import Home from './components/Home'
 import Children from './components/Children'
@@ -17,21 +17,21 @@ function App() {
     getActivities();
   }, []);
   function getActivities() {
-    fetch('http://localhost:8001')
+    fetch('http://localhost:3000/activites')
       .then(response => {
-      console.log('testPrint');
+        console.log('response',response);
         return response.json();
       })
       .then(data => {
-        console.log('data',data)
         setActivities(data);
+        
       });
   }
 
   function createActivity() {
     let activity_name = prompt('Enter activity name');
     let description = prompt('Enter activity desctiption');;
-    fetch('http://localhost:8001/activities', {
+    fetch('http://localhost:3000/activites', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ function App() {
 
   function deleteActivity() {
     let id = prompt('Enter activity id');
-    fetch(`http://localhost:8001/activities/${id}`, {
+    fetch(`http://localhost:3000/activites/${id}`, {
       method: 'DELETE',
 
     })
@@ -69,6 +69,16 @@ function App() {
   })
   return (
     <div className="App">
+      <div>
+        <h1>Daycare App</h1>
+        <nav>
+          <NavLink to="/">Home </NavLink>
+          <NavLink to="/children">Children </NavLink>
+          <NavLink to="/activites">Activites </NavLink>
+          <NavLink to="/addchild">AddChild </NavLink>
+          <NavLink to="/addActivity">AddActivity </NavLink>
+        </nav>
+      </div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/addchild" element={<AddChild />} />

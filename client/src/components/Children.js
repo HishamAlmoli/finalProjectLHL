@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table as BootstrapTable, Button, Form, FormControl } from "react-bootstrap";
+import axios from 'axios';
 
 const Children = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetch("API_URL_HERE")
-      .then((res) => res.json())
-      .then((result) => {
-        setData(result);
-      });
+    // fetch("http://localhost:3000/children")
+    //   .then((res) => res.json())
+    //   .then((result) => {
+    //     console.log(result);
+    //     setData(result);
+    //   });
+    setIsLoading(true);
+  axios
+    .get("http://localhost:3000/children")
+    .then((res) => {
+      setData(res.data);
+      setIsLoading(false);
+      console.log('data1', res.data);
+    })
+    .catch((err) => console.error(err));
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const handleRowSelection = (id) => {
     if (selectedRows.includes(id)) {
@@ -38,14 +54,14 @@ const Children = () => {
     // Code to open a modal or form to edit the selected row
   };
 
-  const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  // const filteredData = data.filter((item) =>
+  //   item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+  
   return (
     <div>
         <h1>Children List</h1>
-      <Form inline className="mb-3">
+      <Form className="mb-3">
         <FormControl
           type="text"
           placeholder="Search"
@@ -80,12 +96,13 @@ const Children = () => {
             </th>
             <th>ID</th>
             <th>Name</th>
-            <th>Notes</th>
+            <th>Group</th>
             <th>Birthdate</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item) => (
+          {data.length > 0 && data.map((item) => (
             <tr key={item.id}>
               <td>
                 <input
@@ -95,9 +112,10 @@ const Children = () => {
                 />
               </td>
               <td>{item.id}</td>
-              <td>{item.name}</td>
+              <td>{item.child_name}</td>
+              <td>{item.age_group}</td>
+              <td>{item.birthday}</td>
               <td>{item.notes}</td>
-              <td>{item.birthdate}</td>
             </tr>
           ))}
         </tbody>

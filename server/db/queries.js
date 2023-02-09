@@ -1,9 +1,9 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'labber',
+  user: 'hishamalmoli',
   host: 'localhost',
   database: 'daycare',
-  password: 123,
+  password: '',
   port: 5432,
 });
 
@@ -31,9 +31,8 @@ const createActivity = (body) => {
     })
   })
 }
-const deleteActivity = () => {
+const deleteActivity = (id) => {
   return new Promise(function (resolve, reject) {
-    const id = request.params.id
     pool.query('DELETE FROM activities WHERE id = $1', [id], (error, results) => {
       if (error) {
         reject(error)
@@ -43,8 +42,47 @@ const deleteActivity = () => {
   })
 }
 
+const getChildren = () => {
+  return pool
+    .query(`
+    select * from children;
+`)
+    .then((result) => {
+      return result.rows
+    })
+    .catch((err) => {
+      console.log("Catch: ", err.message);
+    });
+}
+
+const addChild = (body) => {
+  return new Promise(function (resolve, reject) {
+    const { child_name, notes, birthday, age_group } = body
+    pool.query('INSERT INTO children (parent_id, child_name, notes, birthday, age_group) VALUES (1, $1, $2, $3, $4) RETURNING *', [child_name, notes, birthday, age_group], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(`A new child has been added added: ${results.rows[0]}`)
+    })
+  })
+}
+const deleteChild = (id) => {
+  return new Promise(function (resolve, reject) {
+    pool.query('DELETE FROM children WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(`activity deleted with ID: ${id}`)
+    })
+  })
+}
+
+
 module.exports = {
   getActivities,
   createActivity,
-  deleteActivity
+  deleteActivity,
+  getChildren,
+  addChild,
+  deleteChild
 }
