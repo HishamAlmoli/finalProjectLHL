@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table as BootstrapTable, Button, Form, FormControl } from "react-bootstrap";
 
-const Activites = () => {
+const Activities = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -44,7 +44,7 @@ const Activites = () => {
 
   return (
     <div>
-        <h1>Activites List</h1>
+      <h1>Activities List</h1>
       <Form inline className="mb-3">
         <FormControl
           type="text"
@@ -106,4 +106,4 @@ const Activites = () => {
   );
 };
 
-export default Activites;
+export default Activities;

@@ -7,7 +7,7 @@ import AddChild from './components/AddChild'
 import Home from './components/Home'
 import Children from './components/Children'
 import AddActivity from './components/AddActivity'
-import Activites from './components/Activites'
+import Activities from './components/Activities'
 // import React, { useState, useEffect } from 'react';
 
 
@@ -93,7 +93,7 @@ function App() {
         <Route path="/addchild" element={<AddChild />} />
         <Route path="/children" element={<Children />} />
         <Route path="/addActivity" element={<AddActivity />} />
-        <Route path="/activites" element={<Activites />} />
+        <Route path="/activities" element={<Activities />} />
       </Routes>
       {activities ? activity : 'There is no activity data available'}
       <br />
