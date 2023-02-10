@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 3001
-const { getActivities, createActivity, deleteActivity, updateActivity, getChildren } = require('./queries')
+const { getActivities, createActivity, deleteActivity, updateActivity, getChildren, createChild, deleteChild, updateChild } = require('./queries')
 
 app.use(express.json())
 app.use(function (req, res, next) {
@@ -11,7 +11,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', (req, res) => {
+app.get('/children', (req, res) => {
   getChildren()
     .then(response => {
       res.status(200).send(response);
@@ -20,10 +20,12 @@ app.get('/', (req, res) => {
       res.status(500).send(error);
     })
 })
+
 app.get('/activities', (req, res) => {
   getActivities()
     .then(response => {
       res.status(200).send(response);
+
     })
     .catch(error => {
       res.status(500).send(error);
@@ -34,11 +36,12 @@ app.get('/activities', (req, res) => {
 app.post('/activities', (req, res) => {
   createActivity(req.body)
     .then(response => {
-      res.status(200).send(response);
+      res.status(200).send(response)
     })
     .catch(error => {
       res.status(500).send(error);
     })
+  res.redirect('/')
 })
 
 app.put('/activities/:id', (req, res) => {
@@ -53,6 +56,36 @@ app.put('/activities/:id', (req, res) => {
 
 app.delete('/activities/:id', (req, res) => {
   deleteActivity(req.params.id)
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.post('/children', (req, res) => {
+  createChild(req.body)
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.put('/children/:id', (req, res) => {
+  updateChild(req.body, req.params.id)
+    .then(response => {
+      res.status(200).send(response);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.delete('/children/:id', (req, res) => {
+  deleteChild(req.params.id)
     .then(response => {
       res.status(200).send(response);
     })

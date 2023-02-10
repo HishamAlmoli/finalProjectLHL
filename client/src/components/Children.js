@@ -12,7 +12,7 @@ const Children = () => {
     getChildren();
   }, []);
   function getChildren() {
-    fetch('http://localhost:3001')
+    fetch('/children')
       .then(response => {
         return response.json();
       })
@@ -34,6 +34,15 @@ const Children = () => {
     if (selectedRows.length === 0) return;
 
     // Code to delete selected rows from the database
+    function deleteChild(row) {
+      let id = row;
+      fetch(`/children/${id}`, {
+        method: 'DELETE',
+      })
+    }
+    for (const row of selectedRows) {
+      deleteChild(row)
+    }
 
     setData(data.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
@@ -41,8 +50,23 @@ const Children = () => {
 
   const handleEdit = () => {
     if (selectedRows.length !== 1) return;
-
+    console.log(selectedRows)
     // Code to open a modal or form to edit the selected row
+    function updateChild(id) {
+      let child_name = prompt('Enter child name');
+      let notes = prompt('Enter child notes');
+      let age_group = prompt('Enter child age group');
+      let birthday = prompt('Enter child age birthday');
+      fetch(`/children/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ child_name, notes, birthday, age_group }),
+      })
+    }
+    updateChild(selectedRows[0]);
+    getChildren();
   };
 
   // const filteredData = data.filter((item) =>
