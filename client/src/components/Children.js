@@ -18,7 +18,7 @@ const Children = () => {
       })
       .then(data => {
         console.log(data)
-        setChildren(data);
+        setData(data);
       });
   }
 
@@ -45,9 +45,9 @@ const Children = () => {
     // Code to open a modal or form to edit the selected row
   };
 
-  const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredData = data.filter((item) =>
+  //   item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
   const child = children.map((child) => {
     const name = child.child_name
     const key = child.id
@@ -93,12 +93,13 @@ const Children = () => {
             </th>
             <th>ID</th>
             <th>Name</th>
-            <th>Notes</th>
+            <th>Group</th>
             <th>Birthdate</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item) => (
+          {data.length > 0 && data.map((item) => (
             <tr key={item.id}>
               <td>
                 <input
@@ -108,9 +109,10 @@ const Children = () => {
                 />
               </td>
               <td>{item.id}</td>
-              <td>{item.name}</td>
+              <td>{item.child_name}</td>
+              <td>{item.age_group}</td>
+              <td>{item.birthday.slice(0, 10)}</td>
               <td>{item.notes}</td>
-              <td>{item.birthdate}</td>
             </tr>
           ))}
         </tbody>

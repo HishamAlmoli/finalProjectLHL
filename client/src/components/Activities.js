@@ -8,12 +8,18 @@ const Activities = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch("API_URL_HERE")
-      .then((res) => res.json())
-      .then((result) => {
-        setData(result);
-      });
+    getActivities();
   }, []);
+  function getActivities() {
+    fetch('/activities')
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data)
+        setData(data);
+      });
+  }
 
   const handleRowSelection = (id) => {
     if (selectedRows.includes(id)) {
@@ -27,7 +33,15 @@ const Activities = () => {
     if (selectedRows.length === 0) return;
 
     // Code to delete selected rows from the database
-
+    function deleteActivity(row) {
+      let id = row;
+      fetch(`/activities/${id}`, {
+        method: 'DELETE',
+      })
+    }
+    for (const row of selectedRows) {
+      deleteActivity(row)
+    }
     setData(data.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
   };
@@ -36,11 +50,24 @@ const Activities = () => {
     if (selectedRows.length !== 1) return;
 
     // Code to open a modal or form to edit the selected row
+    function updateActivity(id) {
+      let activity_name = prompt('Enter activity name');
+      let description = prompt('Enter activity desctiption');;
+      fetch(`/activities/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ activity_name, description }),
+      })
+    }
+    updateActivity(selectedRows[0]);
+    getActivities();
   };
 
-  const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredData = data.filter((item) =>
+  //   item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <div>
@@ -85,7 +112,8 @@ const Activities = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item) => (
+          {/* {filteredData.map((item) => ( */}
+          {data.map((item) => (
             <tr key={item.id}>
               <td>
                 <input
@@ -95,9 +123,17 @@ const Activities = () => {
                 />
               </td>
               <td>{item.id}</td>
+              <td>{item.activity_name}</td>
+              <td>{item.description}</td>
+              {item.out_of_daycare}
+              {/* <td>{{item.out_of_daycare} ? Ouside : Inside}</td> */}
+              {item.out_of_daycare === true ?
+                <td>Ouside Activity</td> :
+                <td>Inside Activity</td>}
+              {/* <td>{item.id}</td>
               <td>{item.name}</td>
               <td>{item.Description}</td>
-              <td>{item.out}</td>
+              <td>{item.out}</td> */}
             </tr>
           ))}
         </tbody>
