@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table as BootstrapTable, Button, Form, FormControl } from "react-bootstrap";
-import axios from 'axios';
 
-const Children = () => {
+const Activites = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
+  //---
+  const [activities, setActivities] = useState([]);
+  useEffect(() => {
+    getActivities();
+  }, []);
+  function getActivities() {
+    fetch('http://localhost:3000/activites')
+      .then(response => {
+        console.log('response',response);
+        return response.json();
+      })
+      .then(data => {
+        setActivities(data);
+        
+      });
+  }
 
   useEffect(() => {
-    // fetch("http://localhost:3000/children")
-    //   .then((res) => res.json())
-    //   .then((result) => {
-    //     console.log(result);
-    //     setData(result);
-    //   });
-    setIsLoading(true);
-  axios
-    .get("http://localhost:3000/children")
-    .then((res) => {
-      setData(res.data);
-      setIsLoading(false);
-      console.log('data1', res.data);
-    })
-    .catch((err) => console.error(err));
+    fetch("http://localhost:3000/activites")
+      .then((res) => res.json())
+      .then((result) => {
+        setData(result);
+      });
   }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   const handleRowSelection = (id) => {
     if (selectedRows.includes(id)) {
@@ -48,20 +49,20 @@ const Children = () => {
     // Code to delete selected rows from the database
     selectedRows.forEach(id => {
       // Code to send the request to the API with the selected id
-      fetch(`http://localhost:3000/children/${id}`, {
+      fetch(`http://localhost:3000/activites/${id}`, {
         method: 'DELETE'
       })
         .then(response => response.json())
         .then(data => {
           console.log(data);
           // Code to handle the response from the API
-          //getActivities();
+          getActivities();
         })
         .catch(error => {
           console.error(error);
         });
     });
-
+  
     setData(data.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
   };
@@ -72,18 +73,21 @@ const Children = () => {
     // Code to open a modal or form to edit the selected row
   };
 
-  const handleAdd = () => {
-    // Code to open a modal or form to add a new row
-  };
-
   // const filteredData = data.filter((item) =>
   //   item.name.toLowerCase().includes(searchTerm.toLowerCase())
   // );
-  
+
+  //---
+  const activity = activities.map((activity) => {
+    const name = activity.activity_name
+    const key = activity.id
+    return <li>{name}</li>
+  })
   return (
     <div>
-        <h1>Children List</h1>
-      <Form className="mb-3">
+    {/* {activities ? activity : 'There is no activity data available'} */}
+        <h1>Activites List</h1>
+      <Form inline className="mb-3">
         <FormControl
           type="text"
           placeholder="Search"
@@ -95,9 +99,6 @@ const Children = () => {
         </Button>
         <Button variant="primary" onClick={handleEdit} className="ml-2">
           Edit
-        </Button>
-        <Button variant="primary" onClick={handleAdd} className="ml-2">
-          Add
         </Button>
       </Form>
       <BootstrapTable striped bordered hover>
@@ -121,13 +122,13 @@ const Children = () => {
             </th>
             <th>ID</th>
             <th>Name</th>
-            <th>Group</th>
-            <th>Birthdate</th>
-            <th>Notes</th>
+            <th>Description</th>
+            <th>Out of daycare</th>
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 && data.map((item) => (
+          {/* {filteredData.map((item) => ( */}
+          {data.map((item) => (
             <tr key={item.id}>
               <td>
                 <input
@@ -137,10 +138,11 @@ const Children = () => {
                 />
               </td>
               <td>{item.id}</td>
-              <td>{item.child_name}</td>
-              <td>{item.age_group}</td>
-              <td>{item.birthday}</td>
-              <td>{item.notes}</td>
+              <td>{item.activity_name}</td>
+              <td>{item.description}</td>
+              <td style={{ color: item.out_of_daycare === true ? "red" : "blue" }}>
+                {item.out_of_daycare === true ? "Ouside Activity" : "Inside Activity"}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -149,4 +151,4 @@ const Children = () => {
   );
 };
 
-export default Children;
+export default Activites;

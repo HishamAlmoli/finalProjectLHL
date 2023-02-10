@@ -62,7 +62,7 @@ const addChild = (body) => {
       if (error) {
         reject(error)
       }
-      resolve(`A new child has been added added: ${results.rows[0]}`)
+      resolve(`A new child has been added: ${results.rows[0]}`)
     })
   })
 }
@@ -72,7 +72,7 @@ const deleteChild = (id) => {
       if (error) {
         reject(error)
       }
-      resolve(`activity deleted with ID: ${id}`)
+      resolve(`Child is deleted with ID: ${id}`)
     })
   })
 }

@@ -41,10 +41,28 @@ const Activites = () => {
   };
 
   const handleDelete = () => {
-    if (selectedRows.length === 0) return;
+    if (selectedRows.length === 0) {
+      alert("No rows selected");
+      return;
+    }
 
     // Code to delete selected rows from the database
-
+    selectedRows.forEach(id => {
+      // Code to send the request to the API with the selected id
+      fetch(`http://localhost:3000/activites/${id}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          // Code to handle the response from the API
+          getActivities();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
+  
     setData(data.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
   };
@@ -53,6 +71,10 @@ const Activites = () => {
     if (selectedRows.length !== 1) return;
 
     // Code to open a modal or form to edit the selected row
+  };
+
+  const handleAdd = () => {
+    // Code to open a modal or form to add a new row
   };
 
   // const filteredData = data.filter((item) =>
@@ -81,6 +103,9 @@ const Activites = () => {
         </Button>
         <Button variant="primary" onClick={handleEdit} className="ml-2">
           Edit
+        </Button>
+        <Button variant="primary" onClick={handleAdd} className="ml-2">
+          Add
         </Button>
       </Form>
       <BootstrapTable striped bordered hover>
@@ -122,15 +147,9 @@ const Activites = () => {
               <td>{item.id}</td>
               <td>{item.activity_name}</td>
               <td>{item.description}</td>
-              <td>{item.out_of_daycare}</td>
-              {/* <td>{{item.out_of_daycare} ? Ouside : Inside}</td> */}
-              {item.out_of_daycare} === true ? 
-             <td>Ouside Activity</td> :
-             <td>Inside Activity</td> 
-              {/* <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>{item.Description}</td>
-              <td>{item.out}</td> */}
+              <td style={{ color: item.out_of_daycare === true ? "red" : "blue" }}>
+                {item.out_of_daycare === true ? "Ouside Activity" : "Inside Activity"}
+              </td>
             </tr>
           ))}
         </tbody>
