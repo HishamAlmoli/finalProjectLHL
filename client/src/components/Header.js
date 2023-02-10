@@ -8,6 +8,7 @@ export default function Header() {
         <NavLink className="inactive" to="/">Home </NavLink>
         <NavLink className="inactive" to="/children">Children </NavLink>
         <NavLink className="inactive" to="/activities">Activites </NavLink>
+        <br />
         <NavLink className="inactive" to="/addchild">Add Children </NavLink>
         <NavLink className="inactive" to="/addActivity">Add Activities </NavLink>
       </div>
