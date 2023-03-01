@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS parents CASCADE;
+
 DROP TABLE IF EXISTS activities CASCADE;
 DROP TABLE IF EXISTS employees CASCADE;
 DROP TABLE IF EXISTS schedules CASCADE;
@@ -22,7 +22,7 @@ CREATE TABLE activities (
 );
 --schedule items might be better name
 CREATE TABLE schedules (
-  id SERIAL PRIMARY KEY NOT NULL,
+  id SERIAL PDROP TABLE IF EXISTS parents CASCADE;RIMARY KEY NOT NULL,
   activity_id INTEGER REFERENCES activities(id) ON DELETE CASCADE,
   date_time TIMESTAMP
 );

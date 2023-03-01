@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+#background {
+  max-width: 25%;
+  max-height: 25%;
+  position: fixed; 
+  left: 0px; 
+  top: 0px; 
+  z-index: -1; /* Ensure div tag stays behind content; -999 might work, too. */
+}
+
+.stretch {
+  position:fixed;
+  bottom:0px;
+  width:25%;
+  height:25%;
+  display: flex;
+  justify-content: center;
+}
+.img-small {
+  max-width: 50%;
+  max-height: 50%;
+}

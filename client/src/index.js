@@ -5,6 +5,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
 
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', function() {
+//     navigator.serviceWorker.register('/serviceWorker.js');
+//   });
+// }
+
+
 // ReactDOM.render(<App />, document.getElementById('root'));
 const root = createRoot(document.getElementById('root'));
 root.render(

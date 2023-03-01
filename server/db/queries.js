@@ -55,22 +55,38 @@ const getChildren = () => {
     });
 }
 
+// const addChild = (body) => {
+//   return new Promise(function (resolve, reject) {
+//     const { child_name, notes, birthday, age_group } = body
+//     pool.query('INSERT INTO children (parent_id, child_name, notes, birthday, age_group) VALUES (1, $1, $2, $3, $4) RETURNING *', [child_name, notes, birthday, age_group], (error, results) => {
+//       if (error) {
+//         reject(error)
+//       }
+//       resolve(`A new child has been added: ${results.rows[0]}`)
+//     })
+//   })
+// }
 const addChild = (body) => {
   return new Promise(function (resolve, reject) {
-    const { child_name, notes, birthday, age_group } = body
-    pool.query('INSERT INTO children (parent_id, child_name, notes, birthday, age_group) VALUES (1, $1, $2, $3, $4) RETURNING *', [child_name, notes, birthday, age_group], (error, results) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(`A new child has been added: ${results.rows[0]}`)
-    })
+    const { parent_id, child_name, notes, birthday, age_group } = body
+    // pool.query('INSERT INTO children (parent_id, child_name, notes, birthday, age_group) VALUES ($1, $2, $3, $4, $5) RETURNING *', [parent_id, child_name, notes, birthday, age_group], (error, results) => {
+    pool.query("INSERT INTO children (parent_id, child_name, notes, birthday, age_group) VALUES (1, 'testName', 'testNote', '1,13,2023', 1) RETURNING *;")
+    // pool.query('INSERT INTO children (parent_id, child_name, notes, birthday, age_group) VALUES (1, testName, testNote, "1,13,2023", 1) RETURNING *', [parent_id, child_name, notes, birthday, age_group], (error, results) => {
+    //   if (error) {
+    //     reject(error)
+    //     console.log("error: ", error);
+    //   }
+    //   resolve(results.rows[0])
+    // })
   })
-}
+ }
+ 
 const deleteChild = (id) => {
   return new Promise(function (resolve, reject) {
     pool.query('DELETE FROM children WHERE id = $1', [id], (error, results) => {
       if (error) {
         reject(error)
+        console.log("error: ", error);
       }
       resolve(`Child is deleted with ID: ${id}`)
     })

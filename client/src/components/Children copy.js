@@ -13,6 +13,7 @@ const Children = () => {
     // fetch("http://localhost:3000/children")
     //   .then((res) => res.json())
     //   .then((result) => {
+    //     console.log(result);
     //     setData(result);
     //   });
     setIsLoading(true);

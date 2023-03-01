@@ -1,36 +1,34 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table as BootstrapTable, Button, Form, FormControl } from "react-bootstrap";
+import axios from 'axios';
 
-const Activites = () => {
+const Children = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  //---
-  const [activities, setActivities] = useState([]);
   useEffect(() => {
-    getActivities();
+    // fetch("http://localhost:3000/children")
+    //   .then((res) => res.json())
+    //   .then((result) => {
+    //     setData(result);
+    //   });
+    setIsLoading(true);
+  axios
+    .get("http://localhost:3000/children")
+    .then((res) => {
+      setData(res.data);
+      setIsLoading(false);
+      console.log('data1', res.data);
+    })
+    .catch((err) => console.error(err));
   }, []);
-  function getActivities() {
-    fetch('http://localhost:3000/activites')
-      .then(response => {
-        console.log('response',response);
-        return response.json();
-      })
-      .then(data => {
-        setActivities(data);
-        
-      });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
-
-  useEffect(() => {
-    fetch("http://localhost:3000/activites")
-      .then((res) => res.json())
-      .then((result) => {
-        setData(result);
-      });
-  }, []);
 
   const handleRowSelection = (id) => {
     if (selectedRows.includes(id)) {
@@ -41,9 +39,27 @@ const Activites = () => {
   };
 
   const handleDelete = () => {
-    if (selectedRows.length === 0) return;
+    if (selectedRows.length === 0) {
+      alert("No rows selected");
+      return;
+    }
 
     // Code to delete selected rows from the database
+    selectedRows.forEach(id => {
+      // Code to send the request to the API with the selected id
+      fetch(`http://localhost:3000/children/${id}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          // Code to handle the response from the API
+          //getActivities();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
 
     setData(data.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
@@ -55,26 +71,33 @@ const Activites = () => {
     // Code to open a modal or form to edit the selected row
   };
 
+  const handleAdd = () => {
+    // Code to open a modal or form to add a new row
+  };
+
   // const filteredData = data.filter((item) =>
   //   item.name.toLowerCase().includes(searchTerm.toLowerCase())
   // );
-
-  //---
-  const activity = activities.map((activity) => {
-    const name = activity.activity_name
-    const key = activity.id
-    return <li>{name}</li>
-  })
+  
   return (
     <div>
-        <h1>Activites Schedule - Parants mode</h1>
-      <Form inline className="mb-3">
+        <h1>Children List</h1>
+      <Form className="mb-3">
         <FormControl
           type="text"
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <Button variant="danger" onClick={handleDelete} className="ml-2">
+          Delete
+        </Button>
+        <Button variant="primary" onClick={handleEdit} className="ml-2">
+          Edit
+        </Button>
+        <Button variant="primary" onClick={handleAdd} className="ml-2">
+          Add
+        </Button>
       </Form>
       <BootstrapTable striped bordered hover>
         <thead>
@@ -97,13 +120,13 @@ const Activites = () => {
             </th>
             <th>ID</th>
             <th>Name</th>
-            <th>Description</th>
-            <th>Out of daycare</th>
+            <th>Group</th>
+            <th>Birthdate</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
-          {/* {filteredData.map((item) => ( */}
-          {data.map((item) => (
+          {data.length > 0 && data.map((item) => (
             <tr key={item.id}>
               <td>
                 <input
@@ -113,14 +136,10 @@ const Activites = () => {
                 />
               </td>
               <td>{item.id}</td>
-              <td>{item.activity_name}</td>
-              <td>{item.description}</td>
-              <td>{item.out_of_daycare}</td>
-              {/* <td>{{item.out_of_daycare} ? Ouside : Inside}</td> */}
-              {/* <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>{item.Description}</td>
-              <td>{item.out}</td> */}
+              <td>{item.child_name}</td>
+              <td>{item.age_group}</td>
+              <td>{item.birthday}</td>
+              <td>{item.notes}</td>
             </tr>
           ))}
         </tbody>
@@ -129,4 +148,4 @@ const Activites = () => {
   );
 };
 
-export default Activites;
+export default Children;

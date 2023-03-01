@@ -21,6 +21,48 @@ app.get('/', (req, res) => {
     })
 })
 
+// app.post('/children', (req, res) => {
+//   const { child_name, age_group, birthday, notes } = req.body;
+
+//   const newChild = {
+//     id: data.length + 1,
+//     child_name,
+//     age_group,
+//     birthday,
+//     notes
+//   };
+
+//   data.push(newChild);
+
+//   res.status(201).json(newChild);
+// });
+
+app.post("/children", (req, res) => {
+  const { child_name, age_group, birthday, notes } = req.body;
+
+  if (!child_name || !age_group || !birthday) {
+    return res.status(400).send("child_name, age_group, and birthday are required.");
+  }
+
+  const child = {
+    child_name,
+    age_group,
+    birthday,
+    notes,
+  };
+
+  const sql = "INSERT INTO children SET ?";
+  db.query(sql, child, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Failed to add child to database.");
+    }
+
+    child.id = result.insertId;
+    res.status(201).json(child);
+  });
+});
+
 app.post('/activities', (req, res) => {
   createActivity(req.body)
     .then(response => {

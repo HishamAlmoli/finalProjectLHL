@@ -2,17 +2,21 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table as BootstrapTable, Button, Form, FormControl } from "react-bootstrap";
 import axios from 'axios';
+import AddChild from "./AddChild";
+
 
 const Children = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedChild, setSelectedChild] = useState(null);
 
   useEffect(() => {
     // fetch("http://localhost:3000/children")
     //   .then((res) => res.json())
     //   .then((result) => {
+    //     console.log(result);
     //     setData(result);
     //   });
     setIsLoading(true);
@@ -69,10 +73,24 @@ const Children = () => {
     if (selectedRows.length !== 1) return;
 
     // Code to open a modal or form to edit the selected row
+    setSelectedChild(data.find((item) => item.id === selectedRows[0]));
   };
 
   const handleAdd = () => {
     // Code to open a modal or form to add a new row
+    setSelectedChild({});
+  };
+
+  const fetchData = () => {
+    setIsLoading(true);
+    axios
+      .get("http://localhost:3000/children")
+      .then((res) => {
+        setData(res.data);
+        setIsLoading(false);
+        console.log("data1", res.data);
+      })
+      .catch((err) => console.error(err));
   };
 
   // const filteredData = data.filter((item) =>
@@ -99,6 +117,13 @@ const Children = () => {
           Add
         </Button>
       </Form>
+      {selectedChild ? (
+        <AddChild
+          selectedChild={selectedChild}
+          setSelectedChild={setSelectedChild}
+          fetchData={fetchData}
+        />
+      ) : null}
       <BootstrapTable striped bordered hover>
         <thead>
           <tr>
